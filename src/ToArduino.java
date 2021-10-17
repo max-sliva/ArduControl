@@ -26,7 +26,6 @@ public class ToArduino {
         PortScanner portScanner = new PortScanner();
         portScanner.startUSBscanner(listModel);
 //        listOfPorts.
-
         frame.add(listOfPorts, BorderLayout.WEST);
     }
 
