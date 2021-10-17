@@ -17,6 +17,8 @@ public class ToArduino {
     }
 
     private static void setCenter(JFrame frame) {
+        JList<JCheckBox> deviceList = new JList<>();
+//todo вставить в центральную область панель - слева список устройств с чек-боксами, в центре - поле для управления
     }
 
     private static void setWest(JFrame frame) { //левая панель со списком портов
