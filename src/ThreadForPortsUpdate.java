@@ -111,6 +111,16 @@ public class ThreadForPortsUpdate extends Thread{
 
                         if (str.get().contains("end devList")) {
                             System.out.println("str = "+str);
+                            int i = 0;
+                            int size = str.get().split("\n").length;
+                            System.out.println("DeviceList (size = "+size+" ): ");
+//todo сформировать список устройств и связать с портом
+                            for (String s: str.get().split("\n")){
+                                if (i>0 && i<size-1)
+                                    System.out.println(i+": "+s);
+                                i++;
+                            }
+
                             str.set("");
                             if (first.get()) {
                                 tempPort.writeString("1");

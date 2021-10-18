@@ -57,8 +57,8 @@ public class PortScanner {
     public void setListnerForArdu(String port) throws SerialPortException {
         SerialPort tempPort = new SerialPort(port);
         portsHashMap.put(port, tempPort);
-        System.out.println("Set listner for $port");
-//    if (tempPort.isOpened) tempPort.closePort()
+        System.out.println("Set listner for port = "+port);
+    //    if (tempPort.isOpened) tempPort.closePort()
         tempPort.openPort(); //открываем порт
         tempPort.setParams(
                 9600,
@@ -73,17 +73,23 @@ public class PortScanner {
                 try {
                     String temp = tempPort.readString();
                     if (temp!= null) {
-                        if (temp.contains("\n")) str.get().concat(temp);
-                        else str.get().concat(temp.trim());
-//                        else str += temp.trim { it < ' ' && it !='\n'}
+    //                        System.out.println("from port = "+temp);
+                        if (temp.contains("\n")) str.set(str.get()+temp);
+                        else {
+    //                            str.get().concat(temp);
+                            str.set(str.get()+temp);
+    //                            System.out.println("str progress = "+str);
+                        }
+    //                        else str += temp.trim { it < ' ' && it !='\n'}
+
                         if (str.get().contains("end devList")) {
                             System.out.println("str = "+str);
+                            str.set("");
+                            if (first.get()) {
+                                tempPort.writeString("1");
+                                first.set(false);
+                            }
 
-                        }
-                        str.set("");
-                        if (first.get()) {
-                            tempPort.writeString("1");
-                            first.set(false);
                         }
 
                     } else System.out.println("received null from "+port);
@@ -91,7 +97,6 @@ public class PortScanner {
                     e.printStackTrace();
                 }
             }
-
         });
     }
 
