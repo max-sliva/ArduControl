@@ -83,6 +83,7 @@ public class ThreadForPortsUpdate extends Thread{
 
     public void setListnerForArdu(String port) throws SerialPortException {
         SerialPort tempPort = new SerialPort(port);
+        PortWithDevices portWithDevices = new PortWithDevices(port);
         portsHashMap.put(port, tempPort);
         System.out.println("Set listner for port = "+port);
 //    if (tempPort.isOpened) tempPort.closePort()
@@ -114,10 +115,12 @@ public class ThreadForPortsUpdate extends Thread{
                             int i = 0;
                             int size = str.get().split("\n").length;
                             System.out.println("DeviceList (size = "+size+" ): ");
-//todo сформировать список устройств и связать с портом
                             for (String s: str.get().split("\n")){
-                                if (i>0 && i<size-1)
-                                    System.out.println(i+": "+s);
+                                if (i>0 && i<size-1) {
+                                    System.out.println(i + ": " + s);
+                                    portWithDevices.addDevice(s);
+//todo сделать в потоке HashMap с объектами класса PortWithDevices и геттер для получения устройств по имени порта
+                                }
                                 i++;
                             }
 
