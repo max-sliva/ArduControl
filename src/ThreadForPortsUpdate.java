@@ -126,9 +126,7 @@ public class ThreadForPortsUpdate extends Thread{
                                 tempPort.writeString("1");
                                 first.set(false);
                             }
-
                         }
-
                     } else System.out.println("received null from "+port);
                 } catch (SerialPortException e) {
                     e.printStackTrace();
