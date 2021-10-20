@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ToArduino {
+    private static ThreadForPortsUpdate threadForPortsUpdate;
+    private static JList<JCheckBox> deviceList;
+
     public static void main(String[] args) {
         createGUI();
     }
@@ -17,9 +20,11 @@ public class ToArduino {
     }
 
     private static void setCenter(JFrame frame) {
-        JList<JCheckBox> deviceList = new JList<>();
-//todo вставить в центральную область панель - слева список устройств с чек-боксами, в центре - поле для управления
         JPanel centerPane = new JPanel(new BorderLayout());
+//todo вставить в центральную панель Box, туда грузить интерфейс выбранных устройств для управления
+        deviceList = new JList<JCheckBox>();
+//todo сделать листнер для чек-боксов, чтоб выбирать устройства для управления
+
 
         centerPane.add(deviceList, BorderLayout.WEST);
         frame.add(centerPane, BorderLayout.CENTER);
@@ -29,9 +34,11 @@ public class ToArduino {
         JList listOfPorts = new JList();
         DefaultListModel<String> listModel = new DefaultListModel<>();
         listOfPorts.setModel(listModel);
+//todo сделать лиснер для порта, по щелчку загружаем в deviceList спиок устройств для выбранного порта в виде чек-боксов
+
         PortScanner portScanner = new PortScanner();
         portScanner.startUSBscanner(listModel);
-//        listOfPorts.
+        threadForPortsUpdate = portScanner.getThreadForPortsUpdate();
         frame.add(listOfPorts, BorderLayout.WEST);
     }
 

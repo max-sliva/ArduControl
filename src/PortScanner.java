@@ -14,6 +14,7 @@ public class PortScanner {
     private ArrayList<String> portNames;
     private HashMap<String, SerialPort> portsHashMap;
     private String portInfoJSON = "[]";
+    private ThreadForPortsUpdate threadForPortsUpdate;
 
     public ArrayList<String> getPortNames(){
         return portNames;
@@ -49,9 +50,13 @@ public class PortScanner {
             }
 //            Thread.sleep(2000)
         });
-        ThreadForPortsUpdate threadForPortsUpdate = new ThreadForPortsUpdate(portNames, listModel);
+        threadForPortsUpdate = new ThreadForPortsUpdate(portNames, listModel);
         threadForPortsUpdate.start();
 //todo Дописать с нвоым подходом к автоопределению
+    }
+
+    public ThreadForPortsUpdate getThreadForPortsUpdate() {
+        return threadForPortsUpdate;
     }
 
     public void setListnerForArdu(String port) throws SerialPortException {

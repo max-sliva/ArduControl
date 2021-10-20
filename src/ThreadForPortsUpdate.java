@@ -66,6 +66,7 @@ public class ThreadForPortsUpdate extends Thread {
     }
 
     synchronized private void checkForNullPorts() { //todo разобраться, почему из списка портов не убирается несуществующий порт, либо это только на винде
+//todo сделать blackList - список портов, которые недоступны, и их игнорить
         for (String it: portNames2){
 //        portNames.forEach(it -> {
             SerialPort tempPort = new SerialPort(it);
@@ -156,7 +157,7 @@ public class ThreadForPortsUpdate extends Thread {
                                 if (i > 0 && i < size - 1) {
                                     System.out.println(i + ": " + s);
                                     portWithDevices.addDevice(s);
-//todo сделать в потоке геттер для получения устройств по имени порта
+
                                 }
                                 i++;
                             }
@@ -175,4 +176,11 @@ public class ThreadForPortsUpdate extends Thread {
         });
     }
 
+    //геттер для получения устройств по имени порта
+     public ArrayList<String> getPortDevices(String port) {
+         ArrayList<String> devices;
+         PortWithDevices tempPortWithDevices = portWithDevicesHashMap.get(port);
+         devices = tempPortWithDevices.getDevices();
+         return devices;
+    }
 }
