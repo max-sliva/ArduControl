@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ToArduino {
     private static ThreadForPortsUpdate threadForPortsUpdate;
@@ -35,12 +36,20 @@ public class ToArduino {
         DefaultListModel<String> listModel = new DefaultListModel<>();
         listOfPorts.setModel(listModel);
 //todo сделать лиснер для порта, по щелчку загружаем в deviceList спиок устройств для выбранного порта в виде чек-боксов
-        listOfPorts.addListSelectionListener(arg->{
-//            http://www.java2s.com/Tutorials/Java/Swing_How_to/JList/Create_JList_of_CheckBox.htm
-        });
         PortScanner portScanner = new PortScanner();
+        listModel.add(0, "1");
         portScanner.startUSBscanner(listModel);
         threadForPortsUpdate = portScanner.getThreadForPortsUpdate();
+        listOfPorts.addListSelectionListener(arg->{
+//            http://www.java2s.com/Tutorials/Java/Swing_How_to/JList/Create_JList_of_CheckBox.htm
+            String selPort = listOfPorts.getSelectedValue().toString();
+            System.out.println("Selected port = "+selPort);
+            if (!selPort.equals("1")) {
+                ArrayList<String> devices = threadForPortsUpdate.getPortDevices(selPort);
+                System.out.println("Devices for port = ");
+            }
+//            deviceList = new JList(new CheckListItem[] {
+        });
         frame.add(listOfPorts, BorderLayout.WEST);
     }
 

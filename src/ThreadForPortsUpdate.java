@@ -178,9 +178,13 @@ public class ThreadForPortsUpdate extends Thread {
 
     //геттер для получения устройств по имени порта
      public ArrayList<String> getPortDevices(String port) {
-         ArrayList<String> devices;
+         ArrayList<String> devices = null;
          PortWithDevices tempPortWithDevices = portWithDevicesHashMap.get(port);
-         devices = tempPortWithDevices.getDevices();
+//todo проверить, почему не возвращается массив
+         System.out.println("tempPortWithDevices = "+tempPortWithDevices.getDevices().size());
+//         devices = tempPortWithDevices.getDevices();
+
+//         System.out.println("Devices in thread = "+devices);
          return devices;
     }
 }
