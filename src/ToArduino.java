@@ -35,7 +35,9 @@ public class ToArduino {
         DefaultListModel<String> listModel = new DefaultListModel<>();
         listOfPorts.setModel(listModel);
 //todo сделать лиснер для порта, по щелчку загружаем в deviceList спиок устройств для выбранного порта в виде чек-боксов
-
+        listOfPorts.addListSelectionListener(arg->{
+//            http://www.java2s.com/Tutorials/Java/Swing_How_to/JList/Create_JList_of_CheckBox.htm
+        });
         PortScanner portScanner = new PortScanner();
         portScanner.startUSBscanner(listModel);
         threadForPortsUpdate = portScanner.getThreadForPortsUpdate();
