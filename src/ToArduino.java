@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class ToArduino {
     private static ThreadForPortsUpdate threadForPortsUpdate;
-    private static JList<JCheckBox> deviceList;
+    private static Box deviceList;
+    private static JPanel centerPane;
 
     public static void main(String[] args) {
         createGUI();
@@ -21,9 +22,10 @@ public class ToArduino {
     }
 
     private static void setCenter(JFrame frame) {
-        JPanel centerPane = new JPanel(new BorderLayout());
+        centerPane = new JPanel(new BorderLayout());
 //todo вставить в центральную панель Box, туда грузить интерфейс выбранных устройств для управления
-        deviceList = new JList<JCheckBox>();
+        deviceList = new Box(BoxLayout.Y_AXIS);
+//        deviceList.add(new JCheckBox("1"));
 //todo сделать листнер для чек-боксов, чтоб выбирать устройства для управления
 
 
@@ -35,7 +37,6 @@ public class ToArduino {
         JList listOfPorts = new JList();
         DefaultListModel<String> listModel = new DefaultListModel<>();
         listOfPorts.setModel(listModel);
-//todo сделать лиснер для порта, по щелчку загружаем в deviceList спиок устройств для выбранного порта в виде чек-боксов
         PortScanner portScanner = new PortScanner();
         listModel.add(0, "1");
         portScanner.startUSBscanner(listModel);
@@ -46,9 +47,30 @@ public class ToArduino {
             System.out.println("Selected port = "+selPort);
             if (!selPort.equals("1")) {
                 ArrayList<String> devices = threadForPortsUpdate.getPortDevices(selPort);
-                System.out.println("Devices for port = ");
+                System.out.println("Devices for port = "+devices.size());
+                deviceList = new Box(BoxLayout.Y_AXIS);
+                devices.forEach(it->{
+                    System.out.println("device = "+it);
+                    JCheckBox checkBoxForDevice = new JCheckBox(it);
+                    deviceList.add(checkBoxForDevice);
+                    checkBoxForDevice.addActionListener(arg1->{
+                        if (checkBoxForDevice.isSelected()){
+//todo добавить загрузку интерфейса выбранного устройства, сделать фабрику для устройств
+                            System.out.println("on "+checkBoxForDevice.getText());
+                        } else {
+                            System.out.println("off "+checkBoxForDevice.getText());
+//todo выгрузку интерфейса выбранного устройства
+
+                        }
+                    });
+
+                });
+                centerPane.remove(deviceList);
+                centerPane.add(deviceList, BorderLayout.WEST);
+                centerPane.setVisible(false);
+                centerPane.setVisible(true);
+
             }
-//            deviceList = new JList(new CheckListItem[] {
         });
         frame.add(listOfPorts, BorderLayout.WEST);
     }

@@ -32,8 +32,8 @@ public class ThreadForPortsUpdate extends Thread {
             AtomicInteger num = new AtomicInteger();
             //получаем список активных портов
             portNames = new ArrayList<>(Arrays.asList(SerialPortList.getPortNames()));
-            System.out.println("portNames size = " + portNames.size());
-            System.out.println("SerialPortList = " + Arrays.asList(SerialPortList.getPortNames()));
+//            System.out.println("portNames size = " + portNames.size());
+//            System.out.println("SerialPortList = " + Arrays.asList(SerialPortList.getPortNames()));
 //            if (portNames==null)
             if (portNames.size() != portNames2.size()) { //если размер прошлого списка и нового разные
                 printPortsArray();
@@ -178,12 +178,14 @@ public class ThreadForPortsUpdate extends Thread {
 
     //геттер для получения устройств по имени порта
      public ArrayList<String> getPortDevices(String port) {
-         ArrayList<String> devices = null;
+         ArrayList<String> devices = new ArrayList<>();
          PortWithDevices tempPortWithDevices = portWithDevicesHashMap.get(port);
 //todo проверить, почему не возвращается массив
          System.out.println("tempPortWithDevices = "+tempPortWithDevices.getDevices().size());
-//         devices = tempPortWithDevices.getDevices();
-
+         devices = tempPortWithDevices.getDevices();
+//         devices.forEach(it->{
+//             System.out.println("device = "+it);
+//         });
 //         System.out.println("Devices in thread = "+devices);
          return devices;
     }
