@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class PortScanner {
+public class PortScanner { //класс для запуска сканера портов
     private HashMap<String, jssc.SerialPort> portArdus = new HashMap<String, SerialPort>();
     private ArrayList<String> portNames;
     private HashMap<String, SerialPort> portsHashMap;
@@ -42,16 +42,16 @@ public class PortScanner {
         portsHashMap = new HashMap<String, SerialPort>();
         String[] portNames2 = SerialPortList.getPortNames(); // получаем список портов, с ним будем потом сравнивать новый список
         printPortsArray();
-        portNames.forEach ( it -> {
-            try {
-                setListnerForArdu(it);
-            } catch (SerialPortException e) {
-                e.printStackTrace();
-            }
-//            Thread.sleep(2000)
-        });
         threadForPortsUpdate = new ThreadForPortsUpdate(portNames, listModel);
         threadForPortsUpdate.start();
+//        portNames.forEach ( it -> {
+//            try {
+//                setListnerForArdu(it);
+//            } catch (SerialPortException e) {
+//                e.printStackTrace();
+//            }
+////            Thread.sleep(2000)
+//        });
 //todo Дописать с нвоым подходом к автоопределению
     }
 
@@ -59,7 +59,7 @@ public class PortScanner {
         return threadForPortsUpdate;
     }
 
-    public void setListnerForArdu(String port) throws SerialPortException {
+    public void setListnerForArdu(String port) throws SerialPortException { //внести изменения из такого же потокового метода
         SerialPort tempPort = new SerialPort(port);
         portsHashMap.put(port, tempPort);
         System.out.println("Set listner for port = "+port);

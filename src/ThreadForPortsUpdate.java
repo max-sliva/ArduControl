@@ -28,31 +28,39 @@ public class ThreadForPortsUpdate extends Thread {
     @Override
     public void run() {
         System.out.println("in thread for update");
+        boolean first = true;
         while (true) { //в бесконечном цикле будем раз в 3 сек сканировать порты
-            AtomicInteger num = new AtomicInteger();
+            AtomicInteger num = new AtomicInteger(); //целый тип для работы в потоках
             //получаем список активных портов
             portNames = new ArrayList<>(Arrays.asList(SerialPortList.getPortNames()));
 //            System.out.println("portNames size = " + portNames.size());
 //            System.out.println("SerialPortList = " + Arrays.asList(SerialPortList.getPortNames()));
 //            if (portNames==null)
-            if (portNames.size() != portNames2.size()) { //если размер прошлого списка и нового разные
+            if (first) { //если запускаем первый раз
                 printPortsArray();
-                checkPorts();
                 portNames2 = portNames;
-            } else { //если списки равны по размеру
-                num.set(0);
-                portNames.forEach(it -> {
-                    String tempPort = it;
-                    portNames2.forEach(it2 -> {
-                        if (it2.equals(tempPort)) num.getAndIncrement();
-                    });
-                });
-                if (num.get() != portNames.size()) { //если кол-во одинаковых портов меньше кол-ва портов
-                    num.set(0);
-                    System.out.println("Ports changed 2");
+                checkPorts();
+                first = false;
+            }else {
+                if (portNames.size() != portNames2.size()) { //если размер прошлого списка и нового разные
+                    printPortsArray();
                     checkPorts();
                     portNames2 = portNames;
-                    printPortsArray();
+                } else { //если списки равны по размеру
+                    num.set(0);
+                    portNames.forEach(it -> {
+                        String tempPort = it;
+                        portNames2.forEach(it2 -> {
+                            if (it2.equals(tempPort)) num.getAndIncrement();
+                        });
+                    });
+                    if (num.get() != portNames.size()) { //если кол-во одинаковых портов меньше кол-ва портов
+                        num.set(0);
+                        System.out.println("Ports changed 2");
+                        checkPorts();
+                        portNames2 = portNames;
+                        printPortsArray();
+                    }
                 }
             }
             try {
@@ -107,7 +115,7 @@ public class ThreadForPortsUpdate extends Thread {
 
     private void checkPorts() { //проверяем списки портов -
         portNames.forEach(it -> {
-            if (!portNames2.contains(it)) { //todo проверить - нужно ли здесь поставить отрицание
+            if (!portNames2.contains(it)) {
                 System.out.println("" + it + " - new");
             }
             try {
@@ -148,13 +156,18 @@ public class ThreadForPortsUpdate extends Thread {
                         }
 //                        else str += temp.trim { it < ' ' && it !='\n'}
 
-                        if (str.get().contains("end devList")) {
+                        if (str.get().contains("end devList")) { //если достигли конца передачи
                             System.out.println("str = " + str);
                             int i = 0;
-                            int size = str.get().split("\n").length;
+                            int size = str.get().split("\n").length; //узнаем, сколько строк
                             System.out.println("DeviceList (size = " + size + " ): ");
-                            for (String s : str.get().split("\n")) {
-                                if (i > 0 && i < size - 1) {
+                            for (String s : str.get().split("\n")) { //и формируем список устройств
+                                // в формате
+                                // Ardu 2 Devices:
+                                // Servo
+                                // DC_Motor
+                                // end devList
+                                if (i > 0 && i < size - 1) { //без начальной строки и последней, там нет устройств
                                     System.out.println(i + ": " + s);
                                     portWithDevices.addDevice(s);
 
@@ -163,7 +176,7 @@ public class ThreadForPortsUpdate extends Thread {
                             }
                             portWithDevicesHashMap.put(port, portWithDevices);
                             str.set("");
-                            if (first.get()) {
+                            if (first.get()) { //если только подключились к Ардуино, то отправляем ему 1, чтобы он выслал инфу о своих устройствах
                                 tempPort.writeString("1");
                                 first.set(false);
                             }
@@ -180,7 +193,6 @@ public class ThreadForPortsUpdate extends Thread {
      public ArrayList<String> getPortDevices(String port) {
          ArrayList<String> devices = new ArrayList<>();
          PortWithDevices tempPortWithDevices = portWithDevicesHashMap.get(port);
-//todo проверить, почему не возвращается массив
          System.out.println("tempPortWithDevices = "+tempPortWithDevices.getDevices().size());
          devices = tempPortWithDevices.getDevices();
 //         devices.forEach(it->{
