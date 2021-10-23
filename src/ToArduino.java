@@ -69,7 +69,6 @@ public class ToArduino {
                 centerPane.add(deviceList, BorderLayout.WEST);
                 centerPane.setVisible(false);
                 centerPane.setVisible(true);
-
             }
         });
         frame.add(listOfPorts, BorderLayout.WEST);
