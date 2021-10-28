@@ -1,10 +1,7 @@
 import jssc.SerialPort;
-
 import javax.swing.*;
 
 public class ServoMotor extends Device {
-    private SerialPort port;
-    private Box box;
 
     public ServoMotor(SerialPort port) {
         this.port = port;
@@ -14,11 +11,24 @@ public class ServoMotor extends Device {
     }
 
     private void createGUIForDevice(){
-        
+        JSlider slider = new JSlider(1, 170, 1);
+//        slider.setEnabled(false);
+        slider.addChangeListener( arg -> {
+            System.out.println(slider.getValue());
+            textToArdu = "{'device' : 'servo1Angle',  'angle1': "+slider.getValue()+"}";
+//        val serialPort = usbScanner.getSerialPortByName(choosenPort)
+            sendData(textToArdu);
+        });
+        box.add(new JLabel("ServoMotor"));
+        box.add(slider);
     }
 
-    @Override
-    public void sendData(String data) {
-
-    }
+//    @Override
+//    public void sendData(String data) {
+//        try {
+//            port.writeString(data);
+//        } catch (SerialPortException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

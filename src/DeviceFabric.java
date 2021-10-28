@@ -9,7 +9,7 @@ public class DeviceFabric {
             return new ServoMotor(port);
 
         } else if(deviceType.equalsIgnoreCase("DC_Motor")) {
-            return new DcMotor();
+            return new DcMotor(port);
         }
         return null;
     }
