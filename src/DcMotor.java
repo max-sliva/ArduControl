@@ -1,4 +1,4 @@
-public class DcMotor implements DeviceInterface{
+public class DcMotor extends Device{
     @Override
     public void sendData(String data) {
 
