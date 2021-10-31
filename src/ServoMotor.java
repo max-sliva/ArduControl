@@ -11,6 +11,7 @@ public class ServoMotor extends Device {
     }
 
     private void createGUIForDevice(){
+        System.out.println("Created Servo");
         JSlider slider = new JSlider(1, 170, 1);
 //        slider.setEnabled(false);
         slider.addChangeListener( arg -> {

@@ -201,4 +201,8 @@ public class ThreadForPortsUpdate extends Thread {
 //         System.out.println("Devices in thread = "+devices);
          return devices;
     }
+
+    public SerialPort getPortByName(String portName){
+        return portsHashMap.get(portName);
+    }
 }

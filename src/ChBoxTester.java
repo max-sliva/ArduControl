@@ -18,9 +18,7 @@ public class ChBoxTester {
     }
     private static void setCenter(JFrame frame) {
         JPanel centerPane = new JPanel(new BorderLayout());
-//todo вставить в центральную панель Box, туда грузить интерфейс выбранных устройств для управления
         Box deviceList = new Box(BoxLayout.Y_AXIS);
-//todo сделать листнер для чек-боксов, чтоб выбирать устройства для управления
         ArrayList<String> devices = new ArrayList<>();
         devices.add("11");
         devices.add("22");

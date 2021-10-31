@@ -12,6 +12,8 @@ public class DcMotor extends Device{
     }
 
     private void createGUIForDevice() {
+        box.add(new JLabel("ServoMotor"));
+
     }
 //    @Override
 //    public void sendData(String data) {
