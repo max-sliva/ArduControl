@@ -13,6 +13,8 @@ public class DeviceFabric {
 
         } else if(deviceType.contains("DC_Motor")) {
             return new DcMotor(port);
+        }  else if(deviceType.contains("RGB_Matrix")) {
+            return new RGB_Matrix(port);
         }
         System.out.println("Null2 in fabric");
         return null;
