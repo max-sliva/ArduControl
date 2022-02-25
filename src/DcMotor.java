@@ -3,6 +3,7 @@ import jssc.SerialPort;
 import javax.swing.*;
 
 public class DcMotor extends Device{
+    private int speed;
 
     public DcMotor(SerialPort port) {
         this.port = port;
